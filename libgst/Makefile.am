@@ -68,6 +68,19 @@ genbc-impl.stamp: genbc-impl.c genbc-impl.y; echo stamp > $@
 genpr-parse.stamp: genpr-parse.c genpr-parse.y; echo stamp > $@
 genvm-parse.stamp: genvm-parse.c genvm-parse.y; echo stamp > $@
 
+genbc-decl.h: genbc-decl.stamp
+	@test -f $@ || rm -f genbc-decl.stamp
+	@$(MAKE) genbc-decl.stamp
+genbc-impl.h: genbc-impl.stamp
+	@test -f $@ || rm -f genbc-impl.stamp
+	@$(MAKE) genbc-impl.stamp
+genpr-parse.h: genpr-parse.stamp
+	@test -f $@ || rm -f genpr-parse.stamp
+	@$(MAKE) genpr-parse.stamp
+genvm-parse.h: genvm-parse.stamp
+	@test -f $@ || rm -f genvm-parse.stamp
+	@$(MAKE) genvm-parse.stamp
+
 genbc.o: genbc-decl.stamp genbc-impl.stamp
 genbc-scan.o: genbc-decl.stamp genbc-impl.stamp
 genbc-decl.o: genbc-decl.stamp genbc-impl.stamp
