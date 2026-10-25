@@ -77,6 +77,7 @@ static const char help_text[] =
   "\n   -c --core-dump\t\t Dump core on fatal signal."
   "\n   -D --declaration-trace\t Trace compilation of all loaded files."
   "\n   -E --execution-trace\t\t Trace execution of all loaded files."
+   "\n   -e --execute CODE\t\t Execute the Smalltalk code CODE."
   "\n   -g --no-gc-message\t\t Do not print garbage collection messages."
   "\n   -H --help\t\t\t Print this message and exit."
   "\n   -i --rebuild-image\t\t Ignore the image file; rebuild it from scratch."
@@ -125,13 +126,14 @@ static const char copyright_and_legal_stuff_text[] =
 #define OPT_MAYBE_REBUILD 5
 #define OPT_NO_LINE_NUMBERS 6
 
-#define OPTIONS "-acDEf:ghiI:K:lL:QqrSvV"
+#define OPTIONS "-acDEe:f:ghiI:K:lL:QqrSvV"
 
 static const struct option long_options[] = {
   {"smalltalk-args", 0, 0, 'a'},
   {"core-dump", 0, 0, 'c'},
   {"declaration-trace", 0, 0, 'D'},
   {"execution-trace", 0, 0, 'E'},
+  {"execute", 1, 0, 'e'},
   {"file", 0, 0, 'f'},
   {"kernel-directory", 1, 0, OPT_KERNEL_DIR},
   {"no-user-files", 0, 0, OPT_NO_USER},
@@ -160,6 +162,10 @@ struct loaded_file {
 
 static struct loaded_file *loaded_files;
 int n_loaded_files;
+
+/* -e option: code strings to execute after loading files.  */
+static char **eval_strings;
+int n_eval_strings;
 
 
 /* These contain the default path that was picked (after looking at the
@@ -218,6 +224,9 @@ parse_args (int argc,
 	  break;
 	case 'E':
 	  execution_tracing++;
+	  break;
+	case 'e':
+	  eval_strings[n_eval_strings++] = optarg;
 	  break;
 	case 'g':
 	  gst_set_var (GST_GC_MESSAGE, false);
@@ -339,10 +348,14 @@ int
 main(int argc, const char **argv)
 {
   int result;
+  int i;
   struct loaded_file *file;
 
   loaded_files =
     (struct loaded_file *) alloca (sizeof (struct loaded_file) * argc);
+
+  eval_strings = (char **) alloca (sizeof (char *) * argc);
+  n_eval_strings = 0;
 
   gst_set_executable_path (argv[0]);
 #ifdef __APPLE__
@@ -412,7 +425,10 @@ main(int argc, const char **argv)
 	}
     }
 
-  if (n_loaded_files == 0)
+  for (i = 0; i < n_eval_strings; i++)
+    gst_eval_code (eval_strings[i]);
+
+  if (n_loaded_files == 0 && n_eval_strings == 0)
     gst_process_stdin (stdin_prompt);
 
   if (snapshot_after_load)
