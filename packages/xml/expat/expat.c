@@ -476,9 +476,21 @@ gst_EndNamespaceDeclHandler (void *userData,
   XML_StopParser (p, 1);
 }
 
+/* Expat 2.6.0 added an is_parameter_entity argument to
+   XML_SkippedEntityHandler.  */
+#if defined (XML_MAJOR_VERSION) && \
+    (XML_MAJOR_VERSION > 2 \
+     || (XML_MAJOR_VERSION == 2 && XML_MINOR_VERSION >= 6))
+# define GST_EXPAT_HAS_IS_PARAMETER_ENTITY 1
+#endif
+
 static void
 gst_SkippedEntityHandler (void *userData,
-			  const XML_Char * entityName)
+			  const XML_Char * entityName
+#ifdef GST_EXPAT_HAS_IS_PARAMETER_ENTITY
+			  , int is_parameter_entity
+#endif
+			  )
 {
   XML_Parser p = userData;
   OOP parserOOP = XML_GetUserData (p);
