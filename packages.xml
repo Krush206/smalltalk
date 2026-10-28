@@ -207,6 +207,15 @@
   <file>Getopt.st</file>
   <file>Regex.st</file>
   <file>StreamOps.st</file>
+  <file>ShellUtility.st</file>
+  <file>ShellCommand.st</file>
+  <file>LLMMessage.st</file>
+  <file>LLMChatHistory.st</file>
+  <file>LLMPromptBuilder.st</file>
+  <file>LLMTokenizer.st</file>
+  <file>TestLoad.st</file>
+  <file>TestMinimal.st</file>
+  <file>TestPrint.st</file>
 </disabled-package>
 
 <disabled-package>
