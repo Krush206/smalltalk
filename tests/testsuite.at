@@ -74,6 +74,12 @@ AT_DIFF_TEST([sieve.st])
 AT_DIFF_TEST([strcat.st])
 AT_DIFF_TEST([stcompiler.st])
 
+AT_BANNER([Shell utilities.])
+AT_DIFF_TEST([shell_utilities_test.st])
+
+AT_BANNER([LLM utilities.])
+AT_DIFF_TEST([llm_utilities_test.st])
+
 AT_BANNER([Basic packages.])
 AT_PACKAGE_TEST([SUnit])
 AT_PACKAGE_TEST([Parser])
