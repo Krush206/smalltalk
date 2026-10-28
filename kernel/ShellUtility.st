@@ -8,9 +8,6 @@ Object subclass: ShellUtility [
         ^ (self run: aCommand) lines
     ]
     ShellUtility class >> runStatus: aCommand [
-        | fd |
-        fd := FileDescriptor popen: aCommand dir: 'r'.
-        fd close.
-        ^ fd status = 0
+        ^ (Smalltalk system: aCommand) = 0
     ]
 ]
