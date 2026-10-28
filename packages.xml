@@ -213,9 +213,6 @@
   <file>LLMChatHistory.st</file>
   <file>LLMPromptBuilder.st</file>
   <file>LLMTokenizer.st</file>
-  <file>TestLoad.st</file>
-  <file>TestMinimal.st</file>
-  <file>TestPrint.st</file>
 </disabled-package>
 
 <disabled-package>
