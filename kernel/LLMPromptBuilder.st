@@ -13,6 +13,6 @@ Object subclass: LLMPromptBuilder [
     user: s [ user := s. ^ self ]
     addHistory: h [ hist := h. ^ self ]
     build [
-        ^ system , String cr , hist prompt , 'User: ' , user
+        ^ system , Character cr asString , hist prompt , 'User: ' , user
     ]
 ]
